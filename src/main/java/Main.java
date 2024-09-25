@@ -12,12 +12,12 @@ public class Main
         boolean exit = false;
         while(!exit)
         {
-            System.out.print("Выберите действие\n1. Перевод строки\n2. Усекание строки\n");
+            System.out.print("Выберите действие\n1. Перевод строки\n2. Усекание строки\n3. Другие преобразования строки\n");
             String userChoice = sc.nextLine();
 
-            while (!(userChoice.equals("1") || userChoice.equals("2")))
+            while (!(userChoice.equals("1") || userChoice.equals("2") || userChoice.equals("3")))
             {
-                System.out.print("Введите 1 или 2\n");
+                System.out.print("Введите 1, 2 или 3\n");
                 userChoice = sc.nextLine();
             }
 
@@ -51,6 +51,55 @@ public class Main
                 }
                 break;
 
+                case "3":
+                {
+                    System.out.print("Выберите действие\n1. Регистр как в предложениях\n2. все буквы строчные\n3. ВСЕ БУКВЫ ПРОПИСНЫЕ\n4. Начинать С Прописных\n5. иЗМЕНИТЬ РЕГИСТР\n");
+                    String userChoiceMethodRegisterChange = sc.nextLine();
+
+                    while (!(userChoiceMethodRegisterChange.equals("1") || userChoiceMethodRegisterChange.equals("2") || userChoiceMethodRegisterChange.equals("3") || userChoiceMethodRegisterChange.equals("4") || userChoiceMethodRegisterChange.equals("5")))
+                    {
+                        System.out.print("Введите 1, 2, 3, 4 или 5\n");
+                        userChoiceMethodRegisterChange = sc.nextLine();
+                    }
+
+                    switch(userChoiceMethodRegisterChange)
+                    {
+                        case "1":
+                        {
+                            System.out.println("Полученная строка: " + StringExtension.toSentenceReg(userInput));
+                        }
+                        break;
+
+                        case "2":
+                        {
+                            System.out.println("Полученная строка: " + StringExtension.allLowReg(userInput));
+                        }
+                        break;
+
+                        case "3":
+                        {
+                            System.out.println("Полученная строка: " + StringExtension.allUpReg(userInput));
+                        }
+                        break;
+
+                        case "4":
+                        {
+                            System.out.println("Полученная строка: " + StringExtension.startWithUp(userInput));
+                        }
+                        break;
+
+                        case "5":
+                        {
+                            System.out.println("Полученная строка: " + StringExtension.reverseReg(userInput));
+                        }
+                        break;
+
+                        default:
+                            break;
+                    }
+                }
+                break;
+
                 default:
                     break;
             }
@@ -62,7 +111,7 @@ public class Main
                 System.out.print("Введите 1 или 2\n");
                 userExit = sc.nextLine();
             }
-            exit = Integer.parseInt(userExit) == 1 ? true : false;
+            exit = Integer.parseInt(userExit) == 1;
         }
 
         sc.close();
