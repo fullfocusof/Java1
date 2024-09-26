@@ -1,6 +1,8 @@
 package main.java;
 
 import main.java.extensions.StringExtension;
+import main.java.extensions.strategy.*;
+
 import java.util.Scanner;
 
 public class Main
@@ -62,35 +64,45 @@ public class Main
                         userChoiceMethodRegisterChange = sc.nextLine();
                     }
 
+                    //IRegSwitch curAlgo;
+                    RegSwitchInterraction curAlgo = new RegSwitchInterraction();
+
                     switch(userChoiceMethodRegisterChange)
                     {
                         case "1":
                         {
-                            System.out.println("Полученная строка: " + StringExtension.toSentenceReg(userInput));
+                            //curAlgo = new RegSwitchSentence();
+                            //curAlgo.RegSwitchInit(userInput);
+                            curAlgo.setRegSwitch(new RegSwitchSentence());
+                            System.out.println("Полученная строка: " + curAlgo.executeRegSwitch(userInput));
                         }
                         break;
 
                         case "2":
                         {
-                            System.out.println("Полученная строка: " + StringExtension.allLowReg(userInput));
+                            curAlgo.setRegSwitch(new RegSwitchAllLow());
+                            System.out.println("Полученная строка: " + curAlgo.executeRegSwitch(userInput));
                         }
                         break;
 
                         case "3":
                         {
-                            System.out.println("Полученная строка: " + StringExtension.allUpReg(userInput));
+                            curAlgo.setRegSwitch(new RegSwitchAllUpp());
+                            System.out.println("Полученная строка: " + curAlgo.executeRegSwitch(userInput));
                         }
                         break;
 
                         case "4":
                         {
-                            System.out.println("Полученная строка: " + StringExtension.startWithUp(userInput));
+                            curAlgo.setRegSwitch(new RegSwitchStartWithUp());
+                            System.out.println("Полученная строка: " + curAlgo.executeRegSwitch(userInput));
                         }
                         break;
 
                         case "5":
                         {
-                            System.out.println("Полученная строка: " + StringExtension.reverseReg(userInput));
+                            curAlgo.setRegSwitch(new RegSwitchReverse());
+                            System.out.println("Полученная строка: " + curAlgo.executeRegSwitch(userInput));
                         }
                         break;
 
