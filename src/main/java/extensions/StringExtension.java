@@ -1,5 +1,6 @@
 package main.java.extensions;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -54,7 +55,7 @@ public class StringExtension
             if (i != input.length() - 1)
             {
                 char nextChar = input.charAt(i + 1);
-                if (transCurChar != null && Character.isUpperCase(nextChar))
+                if (transCurChar != null && Character.isUpperCase(nextChar) && !Character.isLowerCase(currentChar))
                 {
                     result.append(transCurChar.toUpperCase());
                     continue;
@@ -75,22 +76,22 @@ public class StringExtension
 
     public static String truncate(String input, int count)
     {
+        if (count < 0) return "Количество урезаемых символов не может быть меньше нуля";
+
         StringBuilder result = new StringBuilder();
-
-        if (!input.isEmpty() && count >= 0)
-        {
-            result.append(input, 0, Math.min(count, input.length()));
-        }
-
-        //if (count <= input.length()) result.delete(result.length() - count, result.length());
-        //else result.delete(0, result.length());
+        if (!input.isEmpty()) result.append(input, 0, Math.min(count, input.length()));
 
         while (!result.isEmpty() && result.charAt(result.length() - 1) == ' ') // ???
         {
             result.delete(result.length() - 1, result.length());
         }
 
-        return result + "...";
+        String output = result.toString();
+
+        boolean wasTruncated = output.length() < input.trim().length();
+
+        if (!wasTruncated) return output;
+        else return output + "...";
     }
 
     public static String truncate(String input)

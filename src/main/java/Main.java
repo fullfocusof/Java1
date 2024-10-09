@@ -3,6 +3,7 @@ package main.java;
 import main.java.extensions.StringExtension;
 import main.java.extensions.strategy.*;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main

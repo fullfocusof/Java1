@@ -5,7 +5,10 @@ import main.java.extensions.StringExtension;
 import main.java.extensions.strategy.*;
 import org.junit.jupiter.api.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
 class StringExtensionTests
 {
@@ -60,6 +63,12 @@ class StringExtensionTests
         {
             assertEquals("ZHAK ZHAN Ruso", StringExtension.transliteration("ЖАК ЖАН Русо", " "));
         }
+
+        @Test
+        void translitAllUpper2()
+        {
+            assertEquals("UKIPOShivmAIaK", StringExtension.transliteration("УКЫПОШывмАЫаК", " "));
+        }
     }
 
     @Nested
@@ -82,36 +91,37 @@ class StringExtensionTests
         void truncateHaveSpace()
         {
             assertEquals("А", StringExtension.truncate("А         ", 3));
-        } //
+        }
 
         @Test
         void truncateInputShorterThanCount()
         {
             assertEquals("Hello", StringExtension.truncate("Hello", 10));
-        } //
+        }
+
         @Test
         void truncateInputShorterThanCount1()
         {
             assertEquals("Hello jdx...", StringExtension.truncate("Hello jdx      fhjdf", 10));
-        } //
+        }
 
         @Test
         void truncateInputEqualToCount()
         {
             assertEquals("Hello", StringExtension.truncate("Hello", 5));
-        } //
+        }
 
         @Test
         void truncateInputOnlySpaces()
         {
             assertEquals("", StringExtension.truncate("     ", 5));
-        } //
+        }
 
         @Test
         void truncateEmptyInput()
         {
             assertEquals("", StringExtension.truncate("", 5));
-        } //
+        }
 
         @Test
         void truncateCountZero()
@@ -122,8 +132,8 @@ class StringExtensionTests
         @Test
         void truncateCountNegative()
         {
-            assertEquals("...", StringExtension.truncate("Hello", -1));
-        } // exception
+            assertEquals("Количество урезаемых символов не может быть меньше нуля", StringExtension.truncate("Hello", -1));
+        }
     }
 }
 
@@ -137,14 +147,16 @@ class SwitchRegTests
     class SentenceTests
     {
 
-       // @BeforeEach
-
+        @BeforeEach
+        void setRegSwitch()
+        {
+            curAlgo.setRegSwitch(new RegSwitchSentence());
+        }
 
         @Test
         void toSentenceRegEmptyInput()
         {
             String input = "";
-            curAlgo.setRegSwitch(new RegSwitchSentence());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("", result);
         }
@@ -153,7 +165,6 @@ class SwitchRegTests
         void toSentenceRegCommon()
         {
             String input = "this is test.";
-            curAlgo.setRegSwitch(new RegSwitchSentence());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("This is test.", result);
         }
@@ -162,7 +173,6 @@ class SwitchRegTests
         void toSentenceRegNoDot()
         {
             String input = "this is test";
-            curAlgo.setRegSwitch(new RegSwitchSentence());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("This is test", result);
         }
@@ -171,7 +181,6 @@ class SwitchRegTests
         void toSentenceRegSentences()
         {
             String input = "this IS tEsT. And HellO, World";
-            curAlgo.setRegSwitch(new RegSwitchSentence());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("This is test. And hello, world", result);
         }
@@ -180,7 +189,6 @@ class SwitchRegTests
         void toSentenceRegSigns()
         {
             String input = "наследование - это не полиморфизм. Но это Не вАжНо! как насчет того чтобы что?";
-            curAlgo.setRegSwitch(new RegSwitchSentence());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("Наследование - это не полиморфизм. Но это не важно! Как насчет того чтобы что?", result);
         }
@@ -190,11 +198,16 @@ class SwitchRegTests
     @Order(2)
     class AllLowTests
     {
+        @BeforeEach
+        void setRegSwitch()
+        {
+            curAlgo.setRegSwitch(new RegSwitchAllLow());
+        }
+
         @Test
         void toAllLowRegEmptyInput()
         {
             String input = "";
-            curAlgo.setRegSwitch(new RegSwitchAllLow());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("", result);
         }
@@ -203,7 +216,6 @@ class SwitchRegTests
         void toAllLowRegCommon()
         {
             String input = "ThIs Is TeSt.";
-            curAlgo.setRegSwitch(new RegSwitchAllLow());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("this is test.", result);
         }
@@ -212,7 +224,6 @@ class SwitchRegTests
         void toAllLowRegAllUp()
         {
             String input = "THIS IS TEST";
-            curAlgo.setRegSwitch(new RegSwitchAllLow());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("this is test", result);
         }
@@ -221,7 +232,6 @@ class SwitchRegTests
         void toAllLowRegNoChange()
         {
             String input = "-1/0#56";
-            curAlgo.setRegSwitch(new RegSwitchAllLow());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("-1/0#56", result);
         }
@@ -231,11 +241,16 @@ class SwitchRegTests
     @Order(3)
     class AllUpTests
     {
+        @BeforeEach
+        void setRegSwitch()
+        {
+            curAlgo.setRegSwitch(new RegSwitchAllUpp());
+        }
+
         @Test
         void toAllUpRegEmptyInput()
         {
             String input = "";
-            curAlgo.setRegSwitch(new RegSwitchAllUpp());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("", result);
         }
@@ -244,7 +259,6 @@ class SwitchRegTests
         void toAllUpRegCommon()
         {
             String input = "ThIs Is TeSt.";
-            curAlgo.setRegSwitch(new RegSwitchAllUpp());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("THIS IS TEST.", result);
         }
@@ -253,7 +267,6 @@ class SwitchRegTests
         void toAllUpRegAllLow()
         {
             String input = "this is test";
-            curAlgo.setRegSwitch(new RegSwitchAllUpp());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("THIS IS TEST", result);
         }
@@ -262,7 +275,6 @@ class SwitchRegTests
         void toAllUpRegNoChange()
         {
             String input = "";
-            curAlgo.setRegSwitch(new RegSwitchAllUpp());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("", result);
         }
@@ -272,11 +284,16 @@ class SwitchRegTests
     @Order(4)
     class ReverseTests
     {
+        @BeforeEach
+        void setRegSwitch()
+        {
+            curAlgo.setRegSwitch(new RegSwitchReverse());
+        }
+
         @Test
         void toReverseRegEmptyInput()
         {
             String input = "";
-            curAlgo.setRegSwitch(new RegSwitchReverse());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("", result);
         }
@@ -285,7 +302,6 @@ class SwitchRegTests
         void toReverseRegAllUpper()
         {
             String input = "HELLO";
-            curAlgo.setRegSwitch(new RegSwitchReverse());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("hello", result);
         }
@@ -294,7 +310,6 @@ class SwitchRegTests
         void toReverseAllLow()
         {
             String input = "hello";
-            curAlgo.setRegSwitch(new RegSwitchReverse());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("HELLO", result);
         }
@@ -303,7 +318,6 @@ class SwitchRegTests
         void toReverseMixed()
         {
             String input = "hElLo";
-            curAlgo.setRegSwitch(new RegSwitchReverse());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("HeLlO", result);
         }
@@ -313,11 +327,16 @@ class SwitchRegTests
     @Order(5)
     class StartWithUpTests
     {
+        @BeforeEach
+        void setRegSwitch()
+        {
+            curAlgo.setRegSwitch(new RegSwitchStartWithUp());
+        }
+
         @Test
         void toStartWithUpRegEmptyInput()
         {
             String input = "";
-            curAlgo.setRegSwitch(new RegSwitchStartWithUp());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("", result);
         }
@@ -326,7 +345,6 @@ class SwitchRegTests
         void toStartWithUpRegStartWithLow()
         {
             String input = "hello";
-            curAlgo.setRegSwitch(new RegSwitchStartWithUp());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("Hello", result);
         }
@@ -335,7 +353,6 @@ class SwitchRegTests
         void toStartWithUpRegSentences()
         {
             String input = "hello, and my name is. John. sena...";
-            curAlgo.setRegSwitch(new RegSwitchStartWithUp());
             String result = curAlgo.executeRegSwitch(input);
             assertEquals("Hello, And My Name Is. John. Sena...", result);
         }
